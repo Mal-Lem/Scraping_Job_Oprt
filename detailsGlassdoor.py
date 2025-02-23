@@ -3,10 +3,9 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 def scrape_details_glassdoor(driver, link):
+    """Scrape les détails d'une offre Glassdoor à partir de son lien."""
     driver.get(link)
     time.sleep(5)
 
@@ -34,33 +33,33 @@ def scrape_details_glassdoor(driver, link):
         "title": titre,
         "entreprise": entreprise,
         "localisation": localisation,
-        "contrat": "Non précisé",  # Glassdoor n'a pas forcément cette info
+        "contrat": "Non précisé",  # Glassdoor n'affiche pas forcément le type de contrat
         "description": description,
         "link": link
     }
 
-# Charger les offres Glassdoor
+# Charger les offres Glassdoor depuis le fichier JSON
 with open("offres_glassdoor.json", "r", encoding="utf-8") as file:
     offres_glassdoor = json.load(file)
 
-# Charger les détails existants pour ne pas écraser les données de HelloWork
+# Charger les détails existants pour éviter d'écraser les offres de HelloWork
 try:
     with open("details_offres.json", "r", encoding="utf-8") as file:
         details_offres = json.load(file)
 except FileNotFoundError:
-    details_offres = []
+    details_offres = []  # Si le fichier n'existe pas encore, initialiser une liste vide.
 
 # Initialiser WebDriver
 service = Service(executable_path="./chromedriver.exe")
 driver = webdriver.Chrome(service=service)
 
-# Scraper les détails Glassdoor
+# Scraper les détails des offres Glassdoor
 for offre in offres_glassdoor:
-    print(f"🔍 Extraction de : {offre['Titre']}")
+    print(f"🔍 Extraction des détails pour : {offre['Titre']}")
     details = scrape_details_glassdoor(driver, offre["Lien"])
     details_offres.append(details)
 
-# Sauvegarde dans le fichier JSON
+# Sauvegarder les offres HelloWork + Glassdoor dans le fichier JSON
 with open("details_offres.json", "w", encoding="utf-8") as file:
     json.dump(details_offres, file, indent=4, ensure_ascii=False)
 

@@ -61,9 +61,9 @@ for offre in offres:
     details_offres.append(details)
 
 # Sauvegarde des détails dans un fichier JSON
-with open("details_hellowork.json", "w", encoding="utf-8") as file:
+with open("details_offres.json", "w", encoding="utf-8") as file:
     json.dump(details_offres, file, indent=4, ensure_ascii=False)
 
-print(f"✅ {len(details_offres)} offres détaillées enregistrées dans details_hellowork.json")
+print(f"✅ {len(details_offres)} offres détaillées enregistrées dans details_offres.json")
 
 driver.quit()

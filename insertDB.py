@@ -16,7 +16,13 @@ try:
     # Charger les détails des offres
     with open("details_offres.json", "r", encoding="utf-8") as file:
         offres_details = json.load(file)
+    # Insérer les données dans MongoDB
+    collection.insert_many(offres_details)
+    print(f"✅ {len(offres_details)} offres insérées dans MongoDB.")
 
+    # Charger les détails des offres
+    with open("IndeedScraper.json", "r", encoding="utf-8") as file:
+        offres_details = json.load(file)
     # Insérer les données dans MongoDB
     collection.insert_many(offres_details)
     print(f"✅ {len(offres_details)} offres insérées dans MongoDB.")
